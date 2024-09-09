@@ -20,6 +20,18 @@ export const signup = async (req, res) => {
         return res.status(400).json({ error: "Email is already taken" });
       }
 
+      // hash password
+
+      const salt = await bcrypt.genSalt(10);  // 10 is recommended
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      const newUser = new User({
+        fullName,
+        username,
+        email,
+        password: hashedPassword
+      })
+
     } catch (error) {
         
     }
