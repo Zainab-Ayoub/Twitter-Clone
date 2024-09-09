@@ -32,6 +32,24 @@ export const signup = async (req, res) => {
         password: hashedPassword
       })
 
+      if (newUser) {
+        generateTokenAndSetCookie(newUser._id, res);
+        await newUser.save();
+
+        res.status(201).json({
+            _id: newUser._id,
+            fullName: newUser.fullName,
+            username: newUser.username,
+            email: newUser.email,
+            followers: newUser.followers,
+            following: newUser.following,
+            profileImg: newUser.profileImg,
+            coverImg: newUser.coverImg,
+        })
+      } else {
+        res.status(400).json({error: "Invalid user data"})
+      }
+
     } catch (error) {
         
     }
