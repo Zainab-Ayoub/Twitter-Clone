@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import User from '../models/userModel.js';
 import Notification from '../models/notificationModel.js';
 
@@ -85,3 +86,4 @@ export const getSuggestedUsers = async (req, res) => {
     res.status(500).json({ error: error.message});
   }
 };
+
