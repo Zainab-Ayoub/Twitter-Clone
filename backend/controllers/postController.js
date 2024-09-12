@@ -210,11 +210,11 @@ export const getUserPosts = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate({
         path: "user",
-        select: "password",
+        select: "-password",
       })
       .populate({
         path: "comments.user",
-        select: "password",
+        select: "-password",
       });
 
       res.status(200).json(posts);
