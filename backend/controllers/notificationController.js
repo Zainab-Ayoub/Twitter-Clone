@@ -37,7 +37,7 @@ export const deleteOneNotification = async (req, res) => {
         const notificationId = req.params.id;
         const userId = req.user._id;
         
-        const notification = await Notification.findById({ notificationId });
+        const notification = await Notification.findById( notificationId );
   
         if (!notification) {
           return res.status(404).json({ error: "Notification not found" });  
@@ -54,4 +54,4 @@ export const deleteOneNotification = async (req, res) => {
         console.log("Error in deleteOneNotification function: ", error.message);
         res.status(500).json({ error: "Internal Server Error" });  
       }
-}
+};
