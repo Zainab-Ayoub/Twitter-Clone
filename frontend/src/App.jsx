@@ -1,11 +1,16 @@
+import { Route, Routes } from "react-router-dom";
+
 function App() {
 
   return (
     <>
-      <button className="btn btn-outline ">Default</button>
-      <button className="btn btn-outline btn-primary">Primary</button>
-      <button className="btn btn-outline btn-secondary">Secondary</button>
-      <button className="btn btn-outline btn-accent">Accent</button>
+      <div className='flex max-w-6xl mx-auto'>
+        <Routes>
+          <Route path="/" element={<HomePage />} />  
+          <Route path="/" element={<LoginPage />} />  
+          <Route path="/" element={<SignUpPage />} />  
+        </Routes> 
+      </div>
     </>
   )
 }
