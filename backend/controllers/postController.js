@@ -10,7 +10,7 @@ export const createPost = async (req, res) => {
       
       const user = await User.findById(userId);
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ error: "User not found" });
       }
       if (!text && !img) {
         return res.status(400).json({ error: "Post must have text or image" });
@@ -21,10 +21,13 @@ export const createPost = async (req, res) => {
       }
       
       const newPost = new Post ({
-        uer: userId,
+        user: userId,
         text,
         img, 
       });
+
+      await newPost.save();
+      res.status(201).json(newPost);
     } catch (error) {
       res.status(500).json({ error: "Internal server error" });
       console.log("Error in createPost controller: ", error);    
