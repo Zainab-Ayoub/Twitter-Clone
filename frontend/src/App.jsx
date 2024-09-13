@@ -7,8 +7,26 @@ import RightPanel from "./components/common/RightPanel";
 import NotificationPage from "./pages/notification/NotificationPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import { Toaster } from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 
 function App() {
+  const { data, isLoading, error, isError } = useQuery({
+    queryKey: ["authUser"],
+    queryFn: async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        console.log("authUser is here: ", data);
+        return data;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+  });
 
   return (
     <>
