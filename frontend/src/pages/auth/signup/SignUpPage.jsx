@@ -8,6 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { useMutation } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
 
 const SignUpPage = () => {
 	const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ const SignUpPage = () => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ email, username, fullName, password });
+				body: JSON.stringify({ email, username, fullName, password }),
 			  });
 			  
 			  if (!res.ok) {
@@ -44,12 +45,15 @@ const SignUpPage = () => {
 			  console.error(error);
 			  toast.error(error.message);	
 			}
+		},
+		onSuccess: () => {
+			toast.success("Account created successfully");
 		}
 	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();  // page qon't reload
-		console.log(formData);
+		mutate(formData);
 	};
 
 	const handleInputChange = (e) => {
@@ -111,8 +115,10 @@ const SignUpPage = () => {
 							value={formData.password}
 						/>
 					</label>
-					<button className='btn rounded-full btn-primary text-white'>Sign up</button>
-					{isError && <p className='text-red-500'>Something went wrong</p>}
+					<button className='btn rounded-full btn-primary text-white'>
+					  {isPending ? "Loading..." : "Sign Up"}	
+					</button>
+					{isError && <p className='text-red-500'>{error.message}</p>}
 				</form>
 				<div className='flex flex-col lg:w-2/3 gap-2 mt-4'>
 					<p className='text-white text-lg'>Already have an account?</p>
