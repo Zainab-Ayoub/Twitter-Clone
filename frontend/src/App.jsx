@@ -8,6 +8,7 @@ import NotificationPage from "./pages/notification/NotificationPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
+import LoadingSpinner from "./components/common/LoadingSpinner";
 
 function App() {
   const { data, isLoading, error, isError } = useQuery({
@@ -27,6 +28,14 @@ function App() {
       }
     },
   });
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <LoadingSpinner size='lg' />
+      </div>
+    )
+  }
 
   return (
     <>
