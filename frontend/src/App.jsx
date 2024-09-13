@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/auth/signup/LoginPage";
 import SignUpPage from "./pages/auth/signup/SignUpPage";
@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "./components/common/LoadingSpinner";
 
 function App() {
-  const { data, isLoading, error, isError } = useQuery({
+  const { data: authUser, isLoading, error, isError } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
       try {
@@ -42,11 +42,11 @@ function App() {
       <div className='flex max-w-6xl mx-auto'>
         <SideBar />
         <Routes>
-          <Route path="/" element={<HomePage />} />  
-          <Route path="/login" element={<LoginPage />} />  
-          <Route path="/signup" element={<SignUpPage />} />  
-          <Route path="/notifications" element={<NotificationPage />} />  
-          <Route path="/profile/:username" element={<ProfilePage />} />  
+          <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />  
+          <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />  
+          <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />  
+          <Route path="/notifications" element={authUser ? <NotificationPage /> : <Navigate to="/login" />} />  
+          <Route path="/profile/:username" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />  
         </Routes> 
         <RightPanel />
         <Toaster />
