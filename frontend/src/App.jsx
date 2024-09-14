@@ -18,6 +18,8 @@ function App() {
         const res = await fetch("/api/auth/me");
         const data = await res.json();
 
+        if(data.error) retun null;
+
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
         }
@@ -41,7 +43,7 @@ function App() {
   return (
     <>
       <div className='flex max-w-6xl mx-auto'>
-        <SideBar />
+        {authUser && <SideBar />}
         <Routes>
           <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />  
           <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />  
@@ -49,7 +51,7 @@ function App() {
           <Route path="/notifications" element={authUser ? <NotificationPage /> : <Navigate to="/login" />} />  
           <Route path="/profile/:username" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />  
         </Routes> 
-        <RightPanel />
+        {authUser && <RightPanel />}
         <Toaster />
       </div>
     </>
