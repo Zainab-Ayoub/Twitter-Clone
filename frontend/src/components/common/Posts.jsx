@@ -2,8 +2,19 @@ import Post from "./Post";
 import PostSkeleton from "../skeleton/PostSkeleton";
 import { POSTS } from "../../utils/db/dummy";
 
-const Posts = () => {
+const Posts = ({feedType}) => {
 	const isLoading = false;
+
+	const getPostEndpoint = () => {
+		switch (feedType) {
+			case "forYou":
+			  return "/api/posts/all";
+			case "following":
+			  return "/api/posts/following";
+			default:
+			  return "/api/posts/all";
+		}
+	}
 
 	return (
 		<>
