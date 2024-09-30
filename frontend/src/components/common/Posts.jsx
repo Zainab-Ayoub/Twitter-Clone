@@ -19,7 +19,7 @@ const Posts = ({feedType}) => {
 
 	const POST_ENDPOINT = getPostEndpoint();
 
-	const { data, isLoading } = useQuery({
+	const { data: posts, isLoading } = useQuery({
 		queryKey: ["posts"],
 		queryFn: async () => {
           try {
@@ -47,9 +47,9 @@ const Posts = ({feedType}) => {
 				</div>
 			)}
 			{!isLoading && POSTS?.length === 0 && <p className='text-center my-4'>No posts in this tab. Switch 👻</p>}
-			{!isLoading && data && (
+			{!isLoading && posts && (
 				<div>
-					{POSTS.map((post) => (
+					{posts.map((post) => (
 						<Post key={post._id} post={post} />
 					))}
 				</div>
