@@ -1,10 +1,8 @@
 import Post from "./Post";
 import PostSkeleton from "../skeleton/PostSkeleton";
-import { POSTS } from "../../utils/db/dummy";
 import { query } from "express";
 
 const Posts = ({feedType}) => {
-	const isLoading = false;
 
 	const getPostEndpoint = () => {
 		switch (feedType) {
@@ -46,7 +44,7 @@ const Posts = ({feedType}) => {
 					<PostSkeleton />
 				</div>
 			)}
-			{!isLoading && POSTS?.length === 0 && <p className='text-center my-4'>No posts in this tab. Switch 👻</p>}
+			{!isLoading && posts?.length === 0 && <p className='text-center my-4'>No posts in this tab. Switch 👻</p>}
 			{!isLoading && posts && (
 				<div>
 					{posts.map((post) => (
