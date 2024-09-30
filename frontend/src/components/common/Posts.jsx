@@ -47,7 +47,7 @@ const Posts = ({feedType}) => {
 				</div>
 			)}
 			{!isLoading && POSTS?.length === 0 && <p className='text-center my-4'>No posts in this tab. Switch 👻</p>}
-			{!isLoading && POSTS && (
+			{!isLoading && data && (
 				<div>
 					{POSTS.map((post) => (
 						<Post key={post._id} post={post} />
