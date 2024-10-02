@@ -27,8 +27,7 @@ const Post = ({ post }) => {
 				return data;
 			} catch (error) {
 				throw new Error(error);
-			},
-
+			}
 			onSuccess: () => {
 				toast.success("Post deleted successfully");
 				// invalidate the query to refetch data
@@ -76,6 +75,10 @@ const Post = ({ post }) => {
 						{isMyPost && (
 							<span className='flex justify-end flex-1'>
 								<FaTrash className='cursor-pointer hover:text-red-500' onClick={handleDeletePost} />
+
+								{isPending && (
+									<LoadingSpinner />
+								)}
 							</span>
 						)}
 					</div>
