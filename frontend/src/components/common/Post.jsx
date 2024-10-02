@@ -12,6 +12,7 @@ import LoadingSpinner from "./LoadingSpinner";
 const Post = ({ post }) => {
 	const [comment, setComment] = useState("");
 	const { data: authUser } = useQuery({ queryKey: ["authUser"]});
+    const queryClient = useQueryClient();
 
 	const {mutate: deletePost, isPending} = useMutation({
 		mutationFn: async() => {
@@ -31,8 +32,8 @@ const Post = ({ post }) => {
 			}
 			onSuccess: () => {
 				toast.success("Post deleted successfully");
-				// invalidate the query to refetch data
-			}
+				queryClient.invalidateQueries({ queryKey: ["posts"] });
+			},
 		}
 	});
 
@@ -75,10 +76,12 @@ const Post = ({ post }) => {
 						</span>
 						{isMyPost && (
 							<span className='flex justify-end flex-1'>
-								<FaTrash className='cursor-pointer hover:text-red-500' onClick={handleDeletePost} />
+								{!isPending && (
+								  <FaTrash className='cursor-pointer hover:text-red-500' onClick={handleDeletePost} />
+								)}
 
 								{isPending && (
-									<LoadingSpinner />
+									<LoadingSpinner size='sm' />
 								)}
 							</span>
 						)}
