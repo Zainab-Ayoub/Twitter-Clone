@@ -6,6 +6,7 @@ import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 
 const Post = ({ post }) => {
 	const [comment, setComment] = useState("");
@@ -14,9 +15,23 @@ const Post = ({ post }) => {
 	const {mutate: deletePost, isPending} = useMutation({
 		mutationFn: async() => {
 			try {
-				const res = await fetch(`/api/posts/${post._id}`)
+				const res = await fetch(`/api/posts/${post._id}`, {
+					method: "DELETE",
+				})
+				const data = await res.json();
+
+				if (!res.ok) {
+				  throw new Error(data.error || "Something went wrong");	
+				}
+
+				return data;
 			} catch (error) {
 				throw new Error(error);
+			},
+
+			onSuccess: () => {
+				toast.success("Post deleted successfully");
+				// invalidate the query to refetch data
 			}
 		}
 	});
