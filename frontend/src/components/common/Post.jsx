@@ -45,7 +45,9 @@ const Post = ({ post }) => {
 
 	const isCommenting = false;
 
-	const handleDeletePost = () => {};
+	const handleDeletePost = () => {
+		deletePost();
+	};
 
 	const handlePostComment = (e) => {
 		e.preventDefault();
