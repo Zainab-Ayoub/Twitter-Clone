@@ -6,8 +6,10 @@ import { IoCloseSharp } from "react-icons/io5";
 const CreatePost = () => {
 	const [text, setText] = useState("");
 	const [img, setImg] = useState(null);
-
 	const imgRef = useRef(null);
+
+	const {data: authUser} = useQuery({queryKey: ['authUser']});
+	const queryClient = useQueryClient();
 
 	const isPending = false;
 	const isError = false;
@@ -18,7 +20,7 @@ const CreatePost = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		alert("Post created successfully");
+	    CreatePost({text, img});
 	};
 
 	const handleImgChange = (e) => {
