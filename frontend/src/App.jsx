@@ -11,20 +11,18 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "./components/common/LoadingSpinner";
 
 function App() {
-  const { data: authUser, isLoading } = useQuery({
+  const { data: authUser, isLoading, isError } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
       try {
         const res = await fetch("/api/auth/me");
         const data = await res.json();
 
-        if(data.error) return null;
-
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
         }
-        console.log("authUser is here: ", data);
-        return data;
+        
+        return data; // Return the authenticated user data
       } catch (error) {
         throw new Error(error);
       }
@@ -35,33 +33,41 @@ function App() {
   if (isLoading) {
     return (
       <div className="h-screen flex justify-center items-center">
-        <LoadingSpinner size='lg' />
+        <LoadingSpinner size="lg" />
       </div>
-    )
+    );
   }
+
+  if (isError) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <p className="text-red-500">Failed to load user data. Please try again later.</p>
+      </div>
+    );
+  }
+
+  const renderSidebarAndPanel = () => (
+    <>
+      {authUser && <SideBar />}
+      {authUser && <RightPanel />}
+    </>
+  );
 
   return (
     <>
-      <div className='flex max-w-6xl mx-auto'>
-        {authUser && <SideBar />}
+      <div className="flex max-w-6xl mx-auto">
+        {renderSidebarAndPanel()}
         <Routes>
-<<<<<<< HEAD
-          <Route path="/" element={<HomePage />} />  
-          <Route path="/login" element={<LoginPage />} />  
-          <Route path="/signup" element={<SignUpPage />} />  
-=======
-          <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />  
-          <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />  
-          <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />  
-          <Route path="/notifications" element={authUser ? <NotificationPage /> : <Navigate to="/login" />} />  
-          <Route path="/profile/:username" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />  
->>>>>>> f34331ae7342136ca957dfeb5c731bdef2675c46
-        </Routes> 
-        {authUser && <RightPanel />}
+          <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
+          <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
+          <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
+          <Route path="/notifications" element={authUser ? <NotificationPage /> : <Navigate to="/login" />} />
+          <Route path="/profile/:username" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+        </Routes>
         <Toaster />
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

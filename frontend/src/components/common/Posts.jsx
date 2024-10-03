@@ -1,44 +1,33 @@
-<<<<<<< HEAD
-export const Posts = () => {
-  return (
-    <div>Posts</div>
-  )
-}
-=======
 import Post from "./Post";
 import PostSkeleton from "../skeleton/PostSkeleton";
-import { query } from "express";
+import { useEffect } from "react"; // Ensure to import useEffect
+import { useQuery } from "@tanstack/react-query";
 
-const Posts = ({feedType}) => {
-
+const Posts = ({ feedType }) => {
 	const getPostEndpoint = () => {
 		switch (feedType) {
 			case "forYou":
-			  return "/api/posts/all";
+				return "/api/posts/all";
 			case "following":
-			  return "/api/posts/following";
+				return "/api/posts/following";
 			default:
-			  return "/api/posts/all";
+				return "/api/posts/all";
 		}
 	};
 
 	const POST_ENDPOINT = getPostEndpoint();
 
-	const { data: posts, isLoading, refetch, isRefetching} = useQuery({
-		queryKey: ["posts"],
+	const { data: posts, isLoading, refetch, isRefetching, isError, error } = useQuery({
+		queryKey: ["posts", feedType], // Add feedType to queryKey to refetch when it changes
 		queryFn: async () => {
-          try {
 			const res = await fetch(POST_ENDPOINT);
 			const data = await res.json();
 
 			if (!res.ok) {
-			  throw new Error(data.error || "Something went wrong");	
+				throw new Error(data.error || "Something went wrong");
 			}
 
 			return data;
-		  } catch (error) {
-			throw new Error(error);
-		  }
 		},
 	});
 
@@ -55,7 +44,12 @@ const Posts = ({feedType}) => {
 					<PostSkeleton />
 				</div>
 			)}
-			{!isLoading && !isRefetching && posts?.length === 0 && <p className='text-center my-4'>No posts in this tab. Switch 👻</p>}
+			{isError && (
+				<p className='text-red-500 text-center my-4'>{error.message}</p> // Display error message
+			)}
+			{!isLoading && !isRefetching && posts?.length === 0 && (
+				<p className='text-center my-4'>No posts in this tab. Switch 👻</p>
+			)}
 			{!isLoading && !isRefetching && posts && (
 				<div>
 					{posts.map((post) => (
@@ -66,5 +60,5 @@ const Posts = ({feedType}) => {
 		</>
 	);
 };
+
 export default Posts;
->>>>>>> f34331ae7342136ca957dfeb5c731bdef2675c46
