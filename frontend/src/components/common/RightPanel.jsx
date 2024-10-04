@@ -66,7 +66,7 @@ const RightPanel = () => {
 											follow(user._id);
 										}}
 									>
-										Follow
+										{isPending ? <LoadingSpinner size='sm'/> : "Follow"}
 									</button>
 								</div>
 							</Link>
