@@ -97,7 +97,11 @@ const Post = ({ post }) => {
 				  throw new Error(error.message); 
 				}		
 			},
-			onSuccess: () => {},
+			onSuccess: () => {
+				toast.success("Comment posted successfully");
+				setComment("");
+				queryClient.invalidateQueries({ queryKey: ["posts"] });
+			},
 			onError: (error) => {
 				toast.error(error.message);
 			}
