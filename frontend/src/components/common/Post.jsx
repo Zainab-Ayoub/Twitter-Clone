@@ -117,7 +117,7 @@ const Post = ({ post }) => {
 	const handlePostComment = (e) => {
 		e.preventDefault();
 		if (isCommenting) return;
-		likePost();
+		commentPost();
 	};
 
 	const handleLikePost = () => {
