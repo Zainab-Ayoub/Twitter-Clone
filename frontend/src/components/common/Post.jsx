@@ -62,7 +62,7 @@ const Post = ({ post }) => {
 	})
 
 	const postOwner = post.user;
-	const isLiked = false;
+	const isLiked = post.likes.includes(authUser._id);
 
 	const isMyPost = authUser._id === post.user._id;
 
@@ -197,7 +197,7 @@ const Post = ({ post }) => {
 								{!isLiked && !isLiking (
 									<FaRegHeart className='w-4 h-4 cursor-pointer text-slate-500 group-hover:text-pink-500' />
 								)}
-								{isLiked && <FaRegHeart className='w-4 h-4 cursor-pointer text-pink-500 ' />}
+								{isLiked && !isLiking (<FaRegHeart className='w-4 h-4 cursor-pointer text-pink-500 ' />)}
 
 								<span
 									className={`text-sm group-hover:text-pink-500 ${
