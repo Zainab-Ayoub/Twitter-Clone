@@ -22,12 +22,19 @@ const useFollow = () => {
             }
         },
 
-        onSuccess: () => {},
+        onSuccess: () => {
+            Promise.all([
+                queryClient.invalidateQueries({ queryKey: ["suggestedUsers"] }),
+                queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+            ]);
+        },
 
         onError: (error) => {
             toast.error(error.message)
-        }
-    })
-}
+        },
+    });
+
+    return { follow, isPending };
+};
 
 export default useFollow;
