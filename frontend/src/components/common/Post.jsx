@@ -55,11 +55,25 @@ const Post = ({ post }) => {
 			}
 		},
 
-		onSuccess: () => {
+		onSuccess: (updatedLikes) => {
           toast.success("Post liked successfully");
-		  queryClient.invalidateQueries({ queryKey: ["posts"] });
-		}
-	})
+		  // this is not the best UX, because it'll refetch all posts
+		  // queryClient.invalidateQueries({ queryKey: ["posts"] });
+		  // instead, update the cache directly for that post
+
+		  queryClient.setQueryData(["posts"], (oldData) => {
+			return oldData.map((p) => {
+				if (p._id === post._id) {
+					return {...p, likes: updatedLikes};
+				}
+				return p;
+			});
+		  });
+		},
+		onError: (error) => {
+			toast.error(error.message);
+		},
+	});
 
 	const postOwner = post.user;
 	const isLiked = post.likes.includes(authUser._id);
