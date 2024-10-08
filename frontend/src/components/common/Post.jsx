@@ -75,7 +75,7 @@ const Post = ({ post }) => {
 		},
 	});
 
-	const { mutate: comlikementPost, isPending: isCommenting } = useMutation({
+	const { mutate: commentPost, isPending: isCommenting } = useMutation({
 		mutationFn: async () => {
 			try {
 				const res = await fetch(`/api/posts/comment/${post._id}`, {
