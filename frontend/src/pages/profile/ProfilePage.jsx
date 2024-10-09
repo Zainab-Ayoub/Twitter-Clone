@@ -11,8 +11,8 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaLink } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
-
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 const ProfilePage = () => {
 	const [coverImg, setCoverImg] = useState(null);
@@ -26,7 +26,7 @@ const ProfilePage = () => {
 
 	const isMyProfile = true;
 
-	const { data: user, isLoading } = useQuery({
+	const { data: user, isLoading, refetch, isRefetching } = useQuery({
 		queryKey: ["userProfile"],
 		queryFn: async () => {
 			try {
@@ -55,14 +55,18 @@ const ProfilePage = () => {
 		}
 	};
 
+	useEffect (() => {
+		refetch();
+	}, [username, refetch]);
+
 	return (
 		<>
 			<div className='flex-[4_4_0]  border-r border-gray-700 min-h-screen '>
 				{/* HEADER */}
-				{isLoading && <ProfileHeaderSkeleton />}
-				{!isLoading && !user && <p className='text-center text-lg mt-4'>User not found</p>}
+				{(isLoading || isRefetching) && <ProfileHeaderSkeleton />}
+				{!isLoading && !isRefetching && !user && <p className='text-center text-lg mt-4'>User not found</p>}
 				<div className='flex flex-col'>
-					{!isLoading && user && (
+					{!isLoading && !isRefetching && user && (
 						<>
 							<div className='flex gap-10 px-4 py-2 items-center'>
 								<Link to='/'>
