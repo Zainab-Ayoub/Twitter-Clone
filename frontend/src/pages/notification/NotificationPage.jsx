@@ -5,8 +5,10 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const NotificationPage = () => {
+	const queryClient = useQueryClient();
 	const { data: notifications, isLoading } = useQuery({
 		queryKey: ["notifications"],
 		queryFn: async () => {
@@ -44,6 +46,7 @@ const NotificationPage = () => {
 		},
 		onSuccess: () => {
 			toast.success("Notifications deleted successfully")
+		    queryClient.invalidateQueries({ queryKey: ["notifications"]}); 
 		},
 		onError: (error) => {
 			toast.error(error.message);
