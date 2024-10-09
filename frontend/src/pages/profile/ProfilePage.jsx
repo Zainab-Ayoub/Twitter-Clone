@@ -209,7 +209,7 @@ const ProfilePage = () => {
 						</>
 					)}
 
-					<Posts />
+					<Posts username={username}/>
 				</div>
 			</div>
 		</>
