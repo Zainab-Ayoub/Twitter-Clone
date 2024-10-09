@@ -209,7 +209,7 @@ const ProfilePage = () => {
 						</>
 					)}
 
-					<Posts username={username} userId={user._id}/>
+					<Posts username={username} userId={user?._id}/>
 				</div>
 			</div>
 		</>
