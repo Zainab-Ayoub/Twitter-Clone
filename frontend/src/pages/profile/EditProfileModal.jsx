@@ -1,5 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
 
 const EditProfileModal = ({ authUser }) => {
     const queryClient = useQueryClient();
